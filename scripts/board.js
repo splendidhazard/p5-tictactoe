@@ -115,6 +115,44 @@ class Board {
       }
       return null;
     }
+
+    findWinningMove(playerSymbol) {
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (this.grid[r][c] === '') {
+            this.grid[r][c] = playerSymbol;
+            const win = this.checkWinner();
+            this.grid[r][c] = '';
+            if (win) {
+              return { row: r, col: c };
+            }
+          }
+        }
+      }
+      return null;
+    }
+    
+    isEmpty(row, col) {
+      return this.grid[row][col] === '';
+    }
+    
+    findRandomEmpty() {
+      let emptyCells = [];
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (this.grid[r][c] === '') {
+            emptyCells.push({ row: r, col: c });
+          }
+        }
+      }
+    
+      if (emptyCells.length > 0) {
+        return random(emptyCells); // p5.js random
+      }
+    
+      return null;
+    }
+    
     
   }
   

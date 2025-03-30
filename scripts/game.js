@@ -1,69 +1,91 @@
 class Game {
-    constructor() {
-      this.board = new Board(); // From board.js
-      this.currentPlayer = 'X';
-      this.gameOver = false;
-      this.winner = null;
-    }
-  
-    display() {
-      this.board.display();
-  
-      if (this.gameOver) {
-        const statusText = document.getElementById('game-status');
+  constructor() {
+    this.board = new Board();
+    this.currentPlayer = random(['X', 'O']); // Random start
+    this.gameOver = false;
+    this.winner = null;
 
-        if (this.winner) {
-          statusText.innerHTML = `${this.winner} Win`;
-        } else {
-          statusText.innerHTML = "It's a tie";
-        }
-      }
+    this.playerSymbol = 'X';
+    this.computerSymbol = 'O';
+
+    const statusText = document.getElementById('game-status');
+
+    if (this.currentPlayer === this.computerSymbol) {
+      statusText.innerHTML = `Computer goes first`;
+      setTimeout(() => this.aiMove(), 500); // Slight delay for realism
+    } else {
+      statusText.innerHTML = `You go first`;
     }
-  
-    handleClick(x, y) {
-      if (this.gameOver || this.currentPlayer !== 'X') return;
-    
-      let row = floor(y / (height / 3));
-      let col = floor(x / (width / 3));
-    
-      if (this.board.makeMove(row, col, this.currentPlayer)) {
-        if (this.board.checkWinner()) {
-          this.gameOver = true;
-          this.winner = this.currentPlayer;
-          return;
-        } else if (this.board.isFull()) {
-          this.gameOver = true;
-          this.winner = null;
-          return;
-        }
-    
-        this.currentPlayer = 'O';
-        this.aiMove(); // Let the AI play
-      }
-    }
-    
-    aiMove() {
-      // First, check if AI can block the player
-      let move = this.board.findBlockingMove('X');
-      if (!move) {
-        // Else pick the first available cell (very basic fallback)
-        move = this.board.findFirstEmpty();
-      }
-    
-      if (move) {
-        this.board.makeMove(move.row, move.col, 'O');
-    
-        if (this.board.checkWinner()) {
-          this.gameOver = true;
-          this.winner = 'O';
-        } else if (this.board.isFull()) {
-          this.gameOver = true;
-          this.winner = null;
-        } else {
-          this.currentPlayer = 'X';
-        }
-      }
-    }
-    
   }
-  
+
+  display() {
+    this.board.display();
+
+    const statusText = document.getElementById('game-status');
+
+    if (this.gameOver) {
+      if (this.winner) {
+        statusText.innerHTML = this.winner === this.playerSymbol ? `You win! 🎉` : `Computer wins! 🤖`;
+      } else {
+        statusText.innerHTML = "It's a tie!";
+      }
+    } else {
+      if (this.currentPlayer === this.playerSymbol) {
+        statusText.innerHTML = "Your Turn";
+      } else {
+        statusText.innerHTML = "Computer's Turn";
+      }
+    }
+  }
+
+  handleClick(x, y) {
+    if (this.gameOver || this.currentPlayer !== this.playerSymbol) return;
+
+    let row = floor(y / (height / 3));
+    let col = floor(x / (width / 3));
+
+    if (this.board.makeMove(row, col, this.playerSymbol)) {
+      if (this.board.checkWinner()) {
+        this.gameOver = true;
+        this.winner = this.playerSymbol;
+        return;
+      } else if (this.board.isFull()) {
+        this.gameOver = true;
+        this.winner = null;
+        return;
+      }
+
+      this.currentPlayer = this.computerSymbol;
+      setTimeout(() => this.aiMove(), 500); // Delay for better UX
+    }
+  }
+
+  aiMove() {
+    if (this.gameOver) return;
+
+    let move = null;
+
+    // 1. Try to win
+    move = this.board.findWinningMove(this.computerSymbol);
+    // 2. Try to block
+    if (!move) move = this.board.findWinningMove(this.playerSymbol);
+    // 3. Take center
+    if (!move && this.board.isEmpty(1, 1)) move = { row: 1, col: 1 };
+    // 4. Random
+    if (!move) move = this.board.findRandomEmpty();
+
+    if (move) {
+      this.board.makeMove(move.row, move.col, this.computerSymbol);
+
+      if (this.board.checkWinner()) {
+        this.gameOver = true;
+        this.winner = this.computerSymbol;
+      } else if (this.board.isFull()) {
+        this.gameOver = true;
+        this.winner = null;
+      } else {
+        this.currentPlayer = this.playerSymbol;
+      }
+    }
+  }
+}

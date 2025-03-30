@@ -11,6 +11,8 @@ function setup() {
 
   const btn = document.getElementById('btn-restart');
   btn.addEventListener('click', () => {
+    const statusText = document.getElementById('game-status');
+    statusText.innerHTML = "";
     game = new Game();
     loop(); // Resume drawing
   });
