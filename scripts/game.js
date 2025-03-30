@@ -10,13 +10,12 @@ class Game {
       this.board.display();
   
       if (this.gameOver) {
-        textSize(32);
-        fill(0);
-        textAlign(CENTER, CENTER);
+        const statusText = document.getElementById('game-status');
+
         if (this.winner) {
-          text(`${this.winner} wins!`, width / 2, height / 2);
+          statusText.innerHTML = `${this.winner} Win`;
         } else {
-          text(`It's a tie!`, width / 2, height / 2);
+          statusText.innerHTML = "It's a tie";
         }
       }
     }
