@@ -87,5 +87,34 @@ class Board {
   
       return false;
     }
+
+    findBlockingMove(playerSymbol) {
+      // Try every empty cell and see if the player would win there
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (this.grid[r][c] === '') {
+            this.grid[r][c] = playerSymbol;
+            const wouldWin = this.checkWinner();
+            this.grid[r][c] = ''; // Undo the move
+            if (wouldWin) {
+              return { row: r, col: c };
+            }
+          }
+        }
+      }
+      return null;
+    }
+    
+    findFirstEmpty() {
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (this.grid[r][c] === '') {
+            return { row: r, col: c };
+          }
+        }
+      }
+      return null;
+    }
+    
   }
   
