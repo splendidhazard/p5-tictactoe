@@ -44,12 +44,18 @@ A clean and interactive **Tic Tac Toe** game built using [p5.js](https://p5js.or
 
 1. **Clone this repository**
    ```bash
-   git clone https://github.com/yourusername/p5-tictactoe.git
+   git clone https://github.com/splendidhazard/p5-tictactoe.git
    ```
 
 2. **Open `index.html`** in any modern web browser.
 
 > No build steps or dependencies required — it’s 100% client-side!
+
+---
+
+## 🎮 Live Demo
+
+👉 [Play the Game Here](https://splendidhazard.github.io/p5-tictactoe/)
 
 ---
 
