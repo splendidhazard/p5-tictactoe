@@ -2,6 +2,7 @@ let game;
 
 function setup() {
   createCanvas(400, 400); // Square canvas
+  
   game = new Game(); // Game class defined in game.js
 
   const btn = document.getElementById('btn-restart');
@@ -17,7 +18,12 @@ function draw() {
   game.display(); // Display the board and current state
 
   if (game.gameOver) {
-    noLoop(); // Stop drawing until restarted
+    noLoop();
+    if (game.winner) {
+      statusEl.textContent = `${game.winner} wins!`;
+    } else {
+      statusEl.textContent = `It's a tie!`;
+    }
   }
 }
 

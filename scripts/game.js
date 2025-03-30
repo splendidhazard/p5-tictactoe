@@ -9,16 +9,16 @@ class Game {
     display() {
       this.board.display();
   
-      if (this.gameOver) {
-        textSize(32);
-        fill(0);
-        textAlign(CENTER, CENTER);
-        if (this.winner) {
-          text(`${this.winner} wins!`, width / 2, height / 2);
-        } else {
-          text(`It's a tie!`, width / 2, height / 2);
-        }
-      }
+    //   if (this.gameOver) {
+    //     textSize(32);
+    //     fill(0);
+    //     textAlign(CENTER, CENTER);
+    //     if (this.winner) {
+    //       text(`${this.winner} wins!`, width / 2, height / 2);
+    //     } else {
+    //       text(`It's a tie!`, width / 2, height / 2);
+    //     }
+    //   }
     }
   
     handleClick(x, y) {
