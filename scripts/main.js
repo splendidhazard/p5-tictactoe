@@ -1,32 +1,40 @@
 let game;
+let cnv; // canvas reference
 
 function setup() {
-  createCanvas(400, 400); // Square canvas
-  
-  game = new Game(); // Game class defined in game.js
+  const canvasSize = 400;
+  cnv = createCanvas(canvasSize, canvasSize);
+
+  centerCanvas();
+
+  game = new Game();
 
   const btn = document.getElementById('btn-restart');
   btn.addEventListener('click', () => {
-    game = new Game(); // Create new game instance
-    loop(); // Restart draw loop if needed
+    game = new Game();
+    loop(); // Resume drawing
   });
-
 }
 
 function draw() {
   background(255);
-  game.display(); // Display the board and current state
+  game.display();
 
   if (game.gameOver) {
-    noLoop();
-    if (game.winner) {
-      statusEl.textContent = `${game.winner} wins!`;
-    } else {
-      statusEl.textContent = `It's a tie!`;
-    }
+    noLoop(); // Stop drawing when game is over
   }
 }
 
 function mousePressed() {
-  game.handleClick(mouseX, mouseY); // Handle player's move
+  game.handleClick(mouseX, mouseY);
+}
+
+function windowResized() {
+  centerCanvas(); // Recenter canvas if window is resized
+}
+
+function centerCanvas() {
+  const x = (windowWidth - width) / 2;
+  const y = (windowHeight - height) / 2;
+  cnv.position(x, y);
 }
